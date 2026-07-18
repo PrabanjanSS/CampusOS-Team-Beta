@@ -12,20 +12,14 @@ export interface EventActionDetails {
   location: string;
   attendees: number;
   status?: string;
-  organizer?: string;
-  registrationDeadline?: string;
-  maxParticipants?: number;
-  poster?: string;
 }
 
 export function EventActionModal({
   event,
   onClose,
-  onRegister,
 }: {
   event: EventActionDetails | null;
   onClose: () => void;
-  onRegister?: (event: EventActionDetails) => Promise<void> | void;
 }) {
   const { toast } = useToast();
 
@@ -54,7 +48,7 @@ export function EventActionModal({
   const joining = event.status === 'live';
   const completed = event.status === 'completed';
 
-  const confirm = async () => {
+  const confirm = () => {
     const eventKey = String(event.id || event.title);
 
     const registrations = JSON.parse(
@@ -74,27 +68,16 @@ export function EventActionModal({
       window.dispatchEvent(new Event('campusos_event_registered'));
     }
 
-    try {
-      if (onRegister) {
-        await onRegister(event);
-      }
-      toast({
-        title: joining
-          ? `You're joining ${event.title}`
-          : `Registered successfully!`,
-        description:
-          attendance === 'online'
-            ? 'We will send your joining details shortly.'
-            : 'Your place has been reserved.',
-        variant: 'success',
-      });
-    } catch {
-      toast({
-        title: 'Registration Pending',
-        description: 'Your registration was saved locally while the backend was unavailable.',
-        variant: 'warning',
-      });
-    }
+    toast({
+      title: joining
+        ? `You're joining ${event.title}`
+        : `Registered successfully!`,
+      description:
+        attendance === 'online'
+          ? 'We will send your joining details shortly.'
+          : 'Your place has been reserved.',
+      variant: 'success',
+    });
 
     onClose();
   };
