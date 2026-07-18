@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Navbar } from '../components/layout/Navbar';
-import { Sidebar } from '../components/layout/Sidebar';
-import { Footer } from '../components/layout/Footer';
-import { pageTransition } from '../components/ui/motion';
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Navbar } from "../components/layout/Navbar";
+import { Sidebar } from "../components/layout/Sidebar";
+import { Footer } from "../components/layout/Footer";
+import { pageTransition } from "../components/ui/motion";
 
 export function AppLayout() {
   const [collapsed, setCollapsed] = useState(false);

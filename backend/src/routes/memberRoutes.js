@@ -4,71 +4,45 @@ const router = express.Router();
 
 const protect = require("../middlewares/authMiddleware");
 
-const authorizeRoles =
-require("../middlewares/roleMiddleware");
+const authorizeRoles = require("../middlewares/roleMiddleware");
 
-
-const{
-
-    getAllMembers,
-    getSingleMember,
-    updateMember,
-    deleteMember
-
-}=require("../controllers/memberController");
-
-
+const {
+  getAllMembers,
+  getSingleMember,
+  updateMember,
+  deleteMember,
+} = require("../controllers/memberController");
 
 router.get(
+  "/",
 
-    "/",
-
-    getAllMembers
-
+  getAllMembers,
 );
-
 
 router.get(
+  "/:id",
 
-    "/:id",
-
-    getSingleMember
-
+  getSingleMember,
 );
-
 
 router.put(
+  "/:id",
 
-    "/:id",
+  protect,
 
-    protect,
+  authorizeRoles("Admin"),
 
-    authorizeRoles(
-
-        "Admin"
-
-    ),
-
-    updateMember
-
+  updateMember,
 );
-
 
 router.delete(
+  "/:id",
 
-    "/:id",
+  protect,
 
-    protect,
+  authorizeRoles("Admin"),
 
-    authorizeRoles(
-
-        "Admin"
-
-    ),
-
-    deleteMember
-
+  deleteMember,
 );
-
 
 module.exports = router;

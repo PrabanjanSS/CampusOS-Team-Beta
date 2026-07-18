@@ -20,9 +20,7 @@ export default function ProjectDetailsPage() {
     return (
       <div className="flex min-h-[70vh] items-center justify-center">
         <div className="text-center">
-          <h1 className="text-3xl font-bold">
-            Project Not Found
-          </h1>
+          <h1 className="text-3xl font-bold">Project Not Found</h1>
 
           <Link
             to="/app/projects"
@@ -37,7 +35,6 @@ export default function ProjectDetailsPage() {
 
   return (
     <div className="mx-auto max-w-6xl p-6 space-y-8">
-
       <Link
         to="/app/projects"
         className="inline-flex items-center gap-2 text-indigo-600 hover:underline"
@@ -57,12 +54,8 @@ export default function ProjectDetailsPage() {
 
       {/* Header */}
       <div className="space-y-3">
-
         <div className="flex flex-wrap items-center gap-3">
-
-          <h1 className="text-4xl font-bold">
-            {project.title}
-          </h1>
+          <h1 className="text-4xl font-bold">{project.title}</h1>
 
           {project.featured && (
             <span className="flex items-center gap-1 rounded-full bg-yellow-400 px-3 py-1 text-sm font-semibold">
@@ -70,60 +63,42 @@ export default function ProjectDetailsPage() {
               Featured
             </span>
           )}
-
         </div>
 
-        <p className="text-lg text-indigo-600 font-semibold">
-          {project.club}
-        </p>
+        <p className="text-lg text-indigo-600 font-semibold">{project.club}</p>
 
-        <p className="text-gray-600 leading-8">
-          {project.description}
-        </p>
-
+        <p className="text-gray-600 leading-8">{project.description}</p>
       </div>
 
       {/* Stats */}
       <div className="grid gap-5 md:grid-cols-3">
-
         <div className="rounded-2xl bg-white p-6 shadow">
-
           <div className="flex items-center gap-3">
             <Heart className="text-red-500" />
             <span>{project.likes} Likes</span>
           </div>
-
         </div>
 
         <div className="rounded-2xl bg-white p-6 shadow">
-
           <div className="flex items-center gap-3">
             <Eye className="text-blue-500" />
             <span>{project.views} Views</span>
           </div>
-
         </div>
 
         <div className="rounded-2xl bg-white p-6 shadow">
-
           <div className="flex items-center gap-3">
             <Users className="text-green-500" />
             <span>{project.members} Members</span>
           </div>
-
         </div>
-
       </div>
 
       {/* Tech Stack */}
       <div>
-
-        <h2 className="mb-4 text-2xl font-bold">
-          Tech Stack
-        </h2>
+        <h2 className="mb-4 text-2xl font-bold">Tech Stack</h2>
 
         <div className="flex flex-wrap gap-3">
-
           {project.techStack.map((tech) => (
             <span
               key={tech}
@@ -132,14 +107,11 @@ export default function ProjectDetailsPage() {
               {tech}
             </span>
           ))}
-
         </div>
-
       </div>
 
       {/* Links */}
       <div className="flex flex-wrap gap-4">
-
         <a
           href={project.github}
           target="_blank"
@@ -159,9 +131,7 @@ export default function ProjectDetailsPage() {
           <ExternalLink size={20} />
           Live Demo
         </a>
-
       </div>
-
     </div>
   );
 }

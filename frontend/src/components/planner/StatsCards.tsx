@@ -7,18 +7,52 @@ interface Props {
   events: PlannerEvent[];
 }
 
+interface CardItem {
+  title: string;
+  value: number;
+  icon: any;
+  color: string;
+}
+
+function SingleStatCard({ item }: { item: CardItem }) {
+  const Icon = item.icon;
+  const val = useCountUp(item.value, 1000, true);
+
+  return (
+    <motion.div
+      whileHover={{ y: -4 }}
+      className="card-surface flex items-center gap-4 p-5 transition-shadow hover:shadow-lift"
+    >
+      <span
+        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${item.color}`}
+      >
+        <Icon size={24} />
+      </span>
+
+      <div>
+        <p className="text-2xl font-bold tracking-tight text-ink">
+          {val.toLocaleString()}
+        </p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-ink-soft/75">
+          {item.title}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function StatsCards({ events }: Props) {
   const totalParticipants = events.reduce(
     (sum, event) => sum + event.participants,
-    0
+    0,
   );
 
   const meetings = events.filter(
-    (event) => event.category === "Meeting"
+    (event) => event.category === "Meeting",
   ).length;
 
   const deadlines = events.filter(
-    (event) => event.category === "Deadline"
+    (event) => event.category === "Deadline",
   ).length;
 
   const stats = [
@@ -50,33 +84,9 @@ export default function StatsCards({ events }: Props) {
 
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-      {stats.map((item) => {
-        const Icon = item.icon;
-        const val = useCountUp(item.value, 1000, true);
-
-        return (
-          <motion.div
-            key={item.title}
-            whileHover={{ y: -4 }}
-            className="card-surface flex items-center gap-4 p-5 transition-shadow hover:shadow-lift"
-          >
-            <span
-              className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${item.color}`}
-            >
-              <Icon size={24} />
-            </span>
-
-            <div>
-              <p className="text-2xl font-bold tracking-tight text-ink">
-                {val.toLocaleString()}
-              </p>
-              <p className="text-xs font-semibold uppercase tracking-wider text-ink-soft/75">
-                {item.title}
-              </p>
-            </div>
-          </motion.div>
-        );
-      })}
+      {stats.map((item) => (
+        <SingleStatCard key={item.title} item={item} />
+      ))}
     </div>
   );
 }

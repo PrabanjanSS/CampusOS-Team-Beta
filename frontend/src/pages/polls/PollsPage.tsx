@@ -56,10 +56,10 @@ export default function PollsPage() {
                   ...option,
                   votes: option.votes + 1,
                 }
-              : option
+              : option,
           ),
         };
-      })
+      }),
     );
   };
 
@@ -87,9 +87,7 @@ export default function PollsPage() {
         {polls.length === 0 ? (
           <StaggerItem className="md:col-span-2">
             <div className="card-surface p-12 text-center">
-              <h2 className="text-xl font-bold text-ink">
-                No Polls Yet
-              </h2>
+              <h2 className="text-xl font-bold text-ink">No Polls Yet</h2>
               <p className="mt-2 text-sm text-ink-soft">
                 {canCreate
                   ? "Create your first poll to start collecting votes."

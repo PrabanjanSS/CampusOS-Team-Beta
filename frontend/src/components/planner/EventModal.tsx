@@ -11,17 +11,14 @@ interface Props {
   onClose: () => void;
 }
 
-export default function EventModal({
-  event,
-  onClose,
-}: Props) {
+export default function EventModal({ event, onClose }: Props) {
   const [registered, setRegistered] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
     if (!event) return;
     const registrations = JSON.parse(
-      localStorage.getItem("registeredEvents") || "[]"
+      localStorage.getItem("registeredEvents") || "[]",
     );
     setRegistered(registrations.includes(event.id));
   }, [event]);
@@ -30,15 +27,12 @@ export default function EventModal({
 
   const handleRegister = () => {
     const registrations = JSON.parse(
-      localStorage.getItem("registeredEvents") || "[]"
+      localStorage.getItem("registeredEvents") || "[]",
     );
 
     if (!registrations.includes(event.id)) {
       registrations.push(event.id);
-      localStorage.setItem(
-        "registeredEvents",
-        JSON.stringify(registrations)
-      );
+      localStorage.setItem("registeredEvents", JSON.stringify(registrations));
       setRegistered(true);
 
       toast({
@@ -54,9 +48,7 @@ export default function EventModal({
       .toISOString()
       .replace(/[-:]|\.\d{3}/g, "");
 
-    const end = new Date(event.end)
-      .toISOString()
-      .replace(/[-:]|\.\d{3}/g, "");
+    const end = new Date(event.end).toISOString().replace(/[-:]|\.\d{3}/g, "");
 
     const url =
       `https://calendar.google.com/calendar/render?action=TEMPLATE` +
@@ -83,9 +75,7 @@ export default function EventModal({
           </Badge>
         </div>
 
-        <p className="text-sm text-ink-soft">
-          {event.description}
-        </p>
+        <p className="text-sm text-ink-soft">{event.description}</p>
 
         <div className="rounded-xl border border-border-soft bg-cream-100/40 p-4 space-y-3.5 text-sm text-ink">
           <div className="flex items-center gap-3">
@@ -107,7 +97,9 @@ export default function EventModal({
 
           <div className="flex items-center gap-3">
             <Users className="h-4.5 w-4.5 text-navy" />
-            <span className="font-medium">{event.participants} Participants</span>
+            <span className="font-medium">
+              {event.participants} Participants
+            </span>
           </div>
         </div>
 

@@ -16,9 +16,7 @@ export default function ForgotPassword() {
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
 
-  const handleReset = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleReset = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!email.trim()) {
@@ -39,8 +37,7 @@ export default function ForgotPassword() {
 
       toast({
         title: "Reset Email Sent",
-        description:
-          "Check your inbox for password reset instructions.",
+        description: "Check your inbox for password reset instructions.",
         variant: "success",
       });
     } catch (error: any) {
@@ -56,8 +53,7 @@ export default function ForgotPassword() {
           break;
 
         case "auth/network-request-failed":
-          message =
-            "Network error. Please check your internet connection.";
+          message = "Network error. Please check your internet connection.";
           break;
 
         default:
@@ -82,63 +78,37 @@ export default function ForgotPassword() {
     >
       {sent ? (
         <div className="text-center">
-
           <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
-
-            <CheckCircle
-              className="h-10 w-10 text-green-600"
-            />
-
+            <CheckCircle className="h-10 w-10 text-green-600" />
           </div>
 
-          <h2 className="text-2xl font-bold text-slate-800">
-            Email Sent
-          </h2>
+          <h2 className="text-2xl font-bold text-slate-800">Email Sent</h2>
 
           <p className="mt-3 text-slate-500">
             We've sent a password reset link to
           </p>
 
-          <p className="font-semibold text-slate-700">
-            {email}
-          </p>
+          <p className="font-semibold text-slate-700">{email}</p>
 
           <Link to="/login">
-            <Button
-              className="mt-8 w-full"
-              size="lg"
-            >
+            <Button className="mt-8 w-full" size="lg">
               Back to Login
             </Button>
           </Link>
-
         </div>
       ) : (
-        <form
-          onSubmit={handleReset}
-          className="space-y-5"
-        >
-
+        <form onSubmit={handleReset} className="space-y-5">
           <Input
             label="Email Address"
             type="email"
             leftIcon="Mail"
             placeholder="you@example.com"
             value={email}
-            onChange={(e) =>
-              setEmail(e.target.value)
-            }
+            onChange={(e) => setEmail(e.target.value)}
           />
 
-          <Button
-            type="submit"
-            className="w-full"
-            size="lg"
-            loading={loading}
-          >
-            {loading
-              ? "Sending Reset Link..."
-              : "Send Reset Link"}
+          <Button type="submit" className="w-full" size="lg" loading={loading}>
+            {loading ? "Sending Reset Link..." : "Send Reset Link"}
           </Button>
 
           <Link
@@ -148,7 +118,6 @@ export default function ForgotPassword() {
             <ArrowLeft size={16} />
             Back to Login
           </Link>
-
         </form>
       )}
     </AuthLayout>

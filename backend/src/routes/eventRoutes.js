@@ -1,101 +1,67 @@
-const express =
-require("express");
+const express = require("express");
 
+const router = express.Router();
 
-const router =
-express.Router();
+const authorizeRoles = require("../middlewares/roleMiddleware");
 
-const authorizeRoles =
-require("../middlewares/roleMiddleware");
-
-
-const{
-
-    createEvent,
-    getAllEvents,
-    getSingleEvent,
-    updateEvent,
-    deleteEvent
-
+const {
+  createEvent,
+  getAllEvents,
+  getSingleEvent,
+  updateEvent,
+  deleteEvent,
 } = require("../controllers/eventController");
 
-
-const protect =
-require("../middlewares/authMiddleware");
-
+const protect = require("../middlewares/authMiddleware");
 
 router.post(
+  "/",
 
-    "/",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Club Lead",
 
-    authorizeRoles(
+    "Admin",
+  ),
 
-        "Club Lead",
-
-        "Admin"
-
-    ),
-
-    createEvent
-
-);
-
-
-router.get(
-
-    "/",
-
-    getAllEvents
-
+  createEvent,
 );
 
 router.get(
+  "/",
 
-    "/:id",
-
-    getSingleEvent
-
+  getAllEvents,
 );
 
+router.get(
+  "/:id",
 
+  getSingleEvent,
+);
 
 router.put(
+  "/:id",
 
-    "/:id",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Club Lead",
 
-    authorizeRoles(
+    "Admin",
+  ),
 
-        "Club Lead",
-
-        "Admin"
-
-    ),
-
-    updateEvent
-
+  updateEvent,
 );
-
-
 
 router.delete(
+  "/:id",
 
-    "/:id",
+  protect,
 
-    protect,
+  authorizeRoles("Admin"),
 
-    authorizeRoles(
-
-        "Admin"
-
-    ),
-
-    deleteEvent
-
+  deleteEvent,
 );
-
 
 module.exports = router;

@@ -11,7 +11,7 @@ interface Props {
 export default function PollCard({ poll, onVote, userVoteOptionId }: Props) {
   const totalVotes = poll.options.reduce(
     (sum, option) => sum + option.votes,
-    0
+    0,
   );
 
   return (
@@ -19,12 +19,8 @@ export default function PollCard({ poll, onVote, userVoteOptionId }: Props) {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-ink">
-            {poll.title}
-          </h2>
-          <p className="mt-1 text-sm text-ink-soft">
-            {poll.description}
-          </p>
+          <h2 className="text-xl font-bold text-ink">{poll.title}</h2>
+          <p className="mt-1 text-sm text-ink-soft">{poll.description}</p>
         </div>
         <Badge tone={poll.isActive ? "success" : "danger"} dot>
           {poll.isActive ? "Active" : "Closed"}
@@ -45,7 +41,9 @@ export default function PollCard({ poll, onVote, userVoteOptionId }: Props) {
           return (
             <div key={option.id} className="group">
               <div className="mb-2 flex justify-between items-center text-sm">
-                <h3 className={`font-semibold transition-colors ${hasVotedThis ? 'text-navy font-bold' : 'text-ink group-hover:text-navy'}`}>
+                <h3
+                  className={`font-semibold transition-colors ${hasVotedThis ? "text-navy font-bold" : "text-ink group-hover:text-navy"}`}
+                >
                   {option.text}
                   {hasVotedThis && (
                     <span className="ml-2 inline-flex items-center gap-1 rounded bg-navy/10 px-1.5 py-0.5 text-[0.65rem] font-bold text-navy">
@@ -60,7 +58,7 @@ export default function PollCard({ poll, onVote, userVoteOptionId }: Props) {
 
               <div className="h-2.5 overflow-hidden rounded-full bg-beige">
                 <div
-                  className={`h-full rounded-full transition-all duration-700 ${hasVotedThis ? 'bg-navy' : hasVotedAny ? 'bg-navy/40' : 'bg-navy'}`}
+                  className={`h-full rounded-full transition-all duration-700 ${hasVotedThis ? "bg-navy" : hasVotedAny ? "bg-navy/40" : "bg-navy"}`}
                   style={{
                     width: `${percent}%`,
                   }}

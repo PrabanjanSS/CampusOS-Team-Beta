@@ -1,431 +1,228 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
-const generateToken =
-require("../utils/generateToken");
+const generateToken = require("../utils/generateToken");
 
+const registerUser = async (req, res) => {
+  try {
+    const { fullName, email, password, department, year } = req.body;
 
-const registerUser = async (req,res)=>{
-
-
-    try{
-
-
-        const {
-
-            fullName,
-            email,
-            password,
-            department,
-            year
-
-        } = req.body;
-
-        const existingUser = await User.findOne({
-
-    email
-
-});
-
-
-if(existingUser){
-
-    return res.status(400).json({
-
-        success:false,
-
-        message:"Email already exists."
-
+    const existingUser = await User.findOne({
+      email,
     });
 
-}
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
 
-const hashedPassword = await bcrypt.hash(
-
-    password,
-
-    10
-
-);
-
-
-        const user = await User.create({
-
-    fullName,
-    email,
-    password:hashedPassword,
-    department,
-    year
-
-});
-
-
-        res.status(201).json({
-
-            success:true,
-
-            message:
-            "User Registered Successfully",
-
-            user
-
-        });
-
-
+        message: "Email already exists.",
+      });
     }
 
-    catch(error){
+    const hashedPassword = await bcrypt.hash(
+      password,
 
-        res.status(500).json({
+      10,
+    );
 
-            success:false,
-
-            message:error.message
-
-        });
-
-    }
-
-
-};
-
-const loginUser = async(req,res)=>{
-
-
-    try{
-
-
-        const {
-
-            email,
-            password
-
-        } = req.body;
-
-
-        const user = await User.findOne({
-
-            email
-
-        });
-
-
-        if(!user){
-
-            return res.status(404).json({
-
-                success:false,
-
-                message:"User not found."
-
-            });
-
-        }
-
-
-        const isMatch = await bcrypt.compare(
-
-    password,
-
-    user.password
-
-);
-
-
-if(!isMatch){
-
-    return res.status(400).json({
-
-        success:false,
-
-        message:"Incorrect Password."
-
+    const user = await User.create({
+      fullName,
+      email,
+      password: hashedPassword,
+      department,
+      year,
     });
 
-}
+    res.status(201).json({
+      success: true,
 
+      message: "User Registered Successfully",
 
-const token = generateToken(
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
 
-    user._id
-
-);
-
-return res.status(200).json({
-
-    success:true,
-
-    message:"Login Successful.",
-
-    token,
-
-    user
-
-});
-
-
-    }
-
-    catch(error){
-
-        return res.status(500).json({
-
-            success:false,
-
-            message:error.message
-
-        });
-
-    }
-
-
+      message: error.message,
+    });
+  }
 };
 
-const getProfile = async(req,res)=>{
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
+    const user = await User.findOne({
+      email,
+    });
 
-    try{
+    if (!user) {
+      return res.status(404).json({
+        success: false,
 
-
-        const user = await User.findById(
-
-            req.user.id
-
-        ).select("-password");
-
-
-        return res.status(200).json({
-
-            success:true,
-
-            user
-
-        });
-
-
+        message: "User not found.",
+      });
     }
 
-    catch(error){
+    const isMatch = await bcrypt.compare(
+      password,
 
+      user.password,
+    );
 
-        return res.status(500).json({
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
 
-            success:false,
-
-            message:error.message
-
-        });
-
+        message: "Incorrect Password.",
+      });
     }
 
+    const token = generateToken(user._id);
 
+    return res.status(200).json({
+      success: true,
+
+      message: "Login Successful.",
+
+      token,
+
+      user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+
+      message: error.message,
+    });
+  }
 };
 
-const updateProfile = async(req,res)=>{
+const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
 
+    return res.status(200).json({
+      success: true,
 
-    try{
+      user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
 
-
-        const{
-
-            fullName,
-            department,
-            year
-
-        } = req.body;
-
-
-        const user = await User.findById(
-
-            req.user.id
-
-        );
-
-
-        if(!user){
-
-            return res.status(404).json({
-
-                success:false,
-
-                message:"User not found."
-
-            });
-
-        }
-
-
-        user.fullName =
-        fullName || user.fullName;
-
-
-        user.department =
-        department || user.department;
-
-
-        user.year =
-        year || user.year;
-
-
-        await user.save();
-
-
-        return res.status(200).json({
-
-            success:true,
-
-            message:"Profile Updated.",
-
-            user
-
-        });
-
-
-    }
-
-    catch(error){
-
-
-        return res.status(500).json({
-
-            success:false,
-
-            message:error.message
-
-        });
-
-    }
-
-
+      message: error.message,
+    });
+  }
 };
 
-const getCurrentUser = async(req,res)=>{
+const updateProfile = async (req, res) => {
+  try {
+    const { fullName, department, year } = req.body;
 
-    try{
+    const user = await User.findById(req.user.id);
 
-        const user = await User.findById(
+    if (!user) {
+      return res.status(404).json({
+        success: false,
 
-            req.user._id
-
-        ).select("-password");
-
-
-        return res.status(200).json({
-
-            success:true,
-
-            user
-
-        });
-
+        message: "User not found.",
+      });
     }
 
-    catch(error){
+    user.fullName = fullName || user.fullName;
 
-        return res.status(500).json({
+    user.department = department || user.department;
 
-            success:false,
+    user.year = year || user.year;
 
-            message:error.message
+    await user.save();
 
-        });
+    return res.status(200).json({
+      success: true,
 
-    }
+      message: "Profile Updated.",
 
+      user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+
+      message: error.message,
+    });
+  }
 };
 
-const changePassword = async(req,res)=>{
+const getCurrentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select("-password");
 
+    return res.status(200).json({
+      success: true,
 
-    try{
+      user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
 
-
-        const{
-
-            oldPassword,
-
-            newPassword
-
-        } = req.body;
-
-
-        const user =
-        await User.findById(
-
-            req.user._id
-
-        );
-
-
-        const isMatch =
-        await bcrypt.compare(
-
-            oldPassword,
-
-            user.password
-
-        );
-
-
-        if(!isMatch){
-
-            return res.status(400).json({
-
-                success:false,
-
-                message:"Incorrect Password."
-
-            });
-
-        }
-
-
-        user.password =
-        await bcrypt.hash(
-
-            newPassword,
-
-            10
-
-        );
-
-
-        await user.save();
-
-
-        return res.status(200).json({
-
-            success:true,
-
-            message:"Password Updated."
-
-        });
-
-
-    }
-
-    catch(error){
-
-        return res.status(500).json({
-
-            success:false,
-
-            message:error.message
-
-        });
-
-    }
-
+      message: error.message,
+    });
+  }
 };
 
+const changePassword = async (req, res) => {
+  try {
+    const {
+      oldPassword,
+
+      newPassword,
+    } = req.body;
+
+    const user = await User.findById(req.user._id);
+
+    const isMatch = await bcrypt.compare(
+      oldPassword,
+
+      user.password,
+    );
+
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+
+        message: "Incorrect Password.",
+      });
+    }
+
+    user.password = await bcrypt.hash(
+      newPassword,
+
+      10,
+    );
+
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+
+      message: "Password Updated.",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+
+      message: error.message,
+    });
+  }
+};
 
 module.exports = {
-
-    registerUser,
-    loginUser,
-    getProfile,
-    updateProfile,
-    getCurrentUser,
-    changePassword
-
+  registerUser,
+  loginUser,
+  getProfile,
+  updateProfile,
+  getCurrentUser,
+  changePassword,
 };

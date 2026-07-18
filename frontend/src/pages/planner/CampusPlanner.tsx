@@ -21,10 +21,7 @@ export default function CampusPlanner() {
       setEvents(JSON.parse(saved));
     } else {
       setEvents(mockEvents);
-      localStorage.setItem(
-        "campusEvents",
-        JSON.stringify(mockEvents)
-      );
+      localStorage.setItem("campusEvents", JSON.stringify(mockEvents));
     }
   }, []);
 
@@ -53,7 +50,10 @@ export default function CampusPlanner() {
         <div className="col-span-12 lg:col-span-3">
           <FadeIn delay={0.15}>
             <Card>
-              <CardHeader title="Upcoming Events" subtitle="Events scheduled this month" />
+              <CardHeader
+                title="Upcoming Events"
+                subtitle="Events scheduled this month"
+              />
               <StaggerGroup className="space-y-3.5 mt-2">
                 {events.slice(0, 5).map((event) => (
                   <StaggerItem key={event.id}>
@@ -65,7 +65,10 @@ export default function CampusPlanner() {
                         {event.title}
                       </h3>
                       <p className="text-[0.72rem] text-ink-soft/80 mt-0.5">
-                        {new Date(event.start).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
+                        {new Date(event.start).toLocaleString([], {
+                          dateStyle: "short",
+                          timeStyle: "short",
+                        })}
                       </p>
                       <p className="text-[0.68rem] text-ink-soft/60">
                         {event.venue}
@@ -85,10 +88,7 @@ export default function CampusPlanner() {
         onCreate={(newEvent) => {
           const updated = [...events, newEvent];
           setEvents(updated);
-          localStorage.setItem(
-            "campusEvents",
-            JSON.stringify(updated)
-          );
+          localStorage.setItem("campusEvents", JSON.stringify(updated));
         }}
       />
     </div>

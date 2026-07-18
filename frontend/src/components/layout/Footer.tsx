@@ -1,12 +1,17 @@
-import { Github, Twitter, Linkedin, Dribbble } from 'lucide-react';
-import { APP_NAME, APP_VERSION, APP_DESCRIPTION, SUPPORT_EMAIL } from '../../utils/constants';
+import { Github, Twitter, Linkedin, Dribbble } from "lucide-react";
+import {
+  APP_NAME,
+  APP_VERSION,
+  APP_DESCRIPTION,
+  SUPPORT_EMAIL,
+} from "../../utils/constants";
 
 export function Footer() {
   const socials = [
-    { icon: Github,   label: 'GitHub'   },
-    { icon: Twitter,  label: 'Twitter'  },
-    { icon: Linkedin, label: 'LinkedIn' },
-    { icon: Dribbble, label: 'Dribbble' },
+    { icon: Github, label: "GitHub" },
+    { icon: Twitter, label: "Twitter" },
+    { icon: Linkedin, label: "LinkedIn" },
+    { icon: Dribbble, label: "Dribbble" },
   ];
   return (
     <footer className="border-t border-border-soft bg-white/50 backdrop-blur-sm">
@@ -23,7 +28,10 @@ export function Footer() {
           <span className="hidden sm:inline">{APP_DESCRIPTION}</span>
         </div>
         <div className="flex items-center gap-4">
-          <a href={`mailto:${SUPPORT_EMAIL}`} className="text-sm text-ink-soft transition-colors hover:text-navy">
+          <a
+            href={`mailto:${SUPPORT_EMAIL}`}
+            className="text-sm text-ink-soft transition-colors hover:text-navy"
+          >
             Support
           </a>
           <div className="h-4 w-px bg-border-soft" />

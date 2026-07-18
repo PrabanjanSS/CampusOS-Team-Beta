@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import { CalendarDays, MapPin, Users } from 'lucide-react';
-import { Modal } from '../ui/Modal';
-import { Button } from '../ui/Button';
-import { useToast } from '../../context/ToastContext';
+import { useEffect, useState } from "react";
+import { CalendarDays, MapPin, Users } from "lucide-react";
+import { Modal } from "../ui/Modal";
+import { Button } from "../ui/Button";
+import { useToast } from "../../context/ToastContext";
 
 export interface EventActionDetails {
   id?: string | number;
@@ -23,19 +23,19 @@ export function EventActionModal({
 }) {
   const { toast } = useToast();
 
-  const [attendance, setAttendance] = useState<'in-person' | 'online'>(
-    'in-person'
+  const [attendance, setAttendance] = useState<"in-person" | "online">(
+    "in-person",
   );
 
   const [registered, setRegistered] = useState(false);
 
   useEffect(() => {
-    setAttendance('in-person');
+    setAttendance("in-person");
 
     if (!event) return;
 
     const registrations = JSON.parse(
-      localStorage.getItem('registeredEvents') || '[]'
+      localStorage.getItem("registeredEvents") || "[]",
     );
 
     const eventKey = String(event.id || event.title);
@@ -45,27 +45,24 @@ export function EventActionModal({
 
   if (!event) return null;
 
-  const joining = event.status === 'live';
-  const completed = event.status === 'completed';
+  const joining = event.status === "live";
+  const completed = event.status === "completed";
 
   const confirm = () => {
     const eventKey = String(event.id || event.title);
 
     const registrations = JSON.parse(
-      localStorage.getItem('registeredEvents') || '[]'
+      localStorage.getItem("registeredEvents") || "[]",
     );
 
     if (!registrations.includes(eventKey)) {
       registrations.push(eventKey);
 
-      localStorage.setItem(
-        'registeredEvents',
-        JSON.stringify(registrations)
-      );
+      localStorage.setItem("registeredEvents", JSON.stringify(registrations));
 
       setRegistered(true);
 
-      window.dispatchEvent(new Event('campusos_event_registered'));
+      window.dispatchEvent(new Event("campusos_event_registered"));
     }
 
     toast({
@@ -73,10 +70,10 @@ export function EventActionModal({
         ? `You're joining ${event.title}`
         : `Registered successfully!`,
       description:
-        attendance === 'online'
-          ? 'We will send your joining details shortly.'
-          : 'Your place has been reserved.',
-      variant: 'success',
+        attendance === "online"
+          ? "We will send your joining details shortly."
+          : "Your place has been reserved.",
+      variant: "success",
     });
 
     onClose();
@@ -88,16 +85,15 @@ export function EventActionModal({
       onClose={onClose}
       title={
         completed
-          ? 'Event Recap'
+          ? "Event Recap"
           : joining
-          ? 'Join this live event'
-          : 'Register for this event'
+            ? "Join this live event"
+            : "Register for this event"
       }
       description={event.title}
       size="md"
     >
       <div className="space-y-5">
-
         {/* Event Details */}
         <div className="rounded-xl bg-cream-100/70 p-4 text-sm text-ink-soft">
           <div className="flex items-center gap-2">
@@ -143,14 +139,14 @@ export function EventActionModal({
               <div className="mt-2 grid grid-cols-2 gap-3">
                 {[
                   {
-                    value: 'in-person' as const,
-                    label: 'In person',
-                    description: 'Attend at the venue',
+                    value: "in-person" as const,
+                    label: "In person",
+                    description: "Attend at the venue",
                   },
                   {
-                    value: 'online' as const,
-                    label: 'Online',
-                    description: 'Receive a joining link',
+                    value: "online" as const,
+                    label: "Online",
+                    description: "Receive a joining link",
                   },
                 ].map((option) => (
                   <button
@@ -159,8 +155,8 @@ export function EventActionModal({
                     onClick={() => setAttendance(option.value)}
                     className={`rounded-xl border p-3 text-left transition-colors ${
                       attendance === option.value
-                        ? 'border-navy bg-navy/5 ring-1 ring-navy/20'
-                        : 'border-border-soft hover:border-navy/30'
+                        ? "border-navy bg-navy/5 ring-1 ring-navy/20"
+                        : "border-border-soft hover:border-navy/30"
                     }`}
                   >
                     <span className="block text-sm font-semibold text-ink">
@@ -180,7 +176,7 @@ export function EventActionModal({
         {/* Footer Buttons */}
         <div className="flex justify-end gap-3">
           <Button variant="secondary" onClick={onClose}>
-            {completed ? 'Close' : 'Cancel'}
+            {completed ? "Close" : "Cancel"}
           </Button>
 
           {!completed && (
@@ -189,11 +185,7 @@ export function EventActionModal({
               disabled={registered && !joining}
               onClick={confirm}
             >
-              {joining
-                ? 'Join Event'
-                : registered
-                ? 'Registered'
-                : 'Register'}
+              {joining ? "Join Event" : registered ? "Registered" : "Register"}
             </Button>
           )}
         </div>

@@ -4,98 +4,71 @@ const router = express.Router();
 
 const protect = require("../middlewares/authMiddleware");
 
-const authorizeRoles =
-require("../middlewares/roleMiddleware");
+const authorizeRoles = require("../middlewares/roleMiddleware");
 
-
-const{
-
-    createAnnouncement,
-    getAllAnnouncements,
-    getSingleAnnouncement,
-    updateAnnouncement,
-    deleteAnnouncement
-
-}=require("../controllers/announcementController");
-
-
+const {
+  createAnnouncement,
+  getAllAnnouncements,
+  getSingleAnnouncement,
+  updateAnnouncement,
+  deleteAnnouncement,
+} = require("../controllers/announcementController");
 
 router.post(
+  "/",
 
-    "/",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Club Lead",
 
-    authorizeRoles(
+    "Admin",
+    "Faculty",
+  ),
 
-        "Club Lead",
-
-        "Admin",
-        "Faculty"
-
-    ),
-
-    createAnnouncement
-
+  createAnnouncement,
 );
-
 
 router.get(
+  "/",
 
-    "/",
-
-    getAllAnnouncements
-
+  getAllAnnouncements,
 );
-
 
 router.get(
+  "/:id",
 
-    "/:id",
-
-    getSingleAnnouncement
-
+  getSingleAnnouncement,
 );
-
 
 router.put(
+  "/:id",
 
-    "/:id",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Club Lead",
 
-    authorizeRoles(
+    "Admin",
 
-        "Club Lead",
+    "Faculty",
+  ),
 
-        "Admin",
-
-        "Faculty"
-
-    ),
-
-    updateAnnouncement
-
+  updateAnnouncement,
 );
-
 
 router.delete(
+  "/:id",
 
-    "/:id",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Admin",
 
-    authorizeRoles(
+    "Faculty",
+  ),
 
-        "Admin",
-
-        "Faculty"
-
-    ),
-
-    deleteAnnouncement
-
+  deleteAnnouncement,
 );
-
 
 module.exports = router;

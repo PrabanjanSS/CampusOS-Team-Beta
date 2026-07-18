@@ -6,72 +6,51 @@ const protect = require("../middlewares/authMiddleware");
 
 const authorizeRoles = require("../middlewares/roleMiddleware");
 
-
-const{
-
-    createGallery,
-    getAllGalleryImages,
-    getSingleImage,
-    deleteImage
-
-}=require("../controllers/galleryController");
-
-
+const {
+  createGallery,
+  getAllGalleryImages,
+  getSingleImage,
+  deleteImage,
+} = require("../controllers/galleryController");
 
 router.post(
+  "/",
 
-    "/",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Club Lead",
 
-        authorizeRoles(
+    "Admin",
+  ),
 
-        "Club Lead",
-
-        "Admin"
-
-    ),
-
-    createGallery
-
+  createGallery,
 );
-
 
 router.get(
+  "/",
 
-    "/",
-
-    getAllGalleryImages
-
+  getAllGalleryImages,
 );
-
 
 router.get(
+  "/:id",
 
-    "/:id",
-
-    getSingleImage
-
+  getSingleImage,
 );
-
 
 router.delete(
+  "/:id",
 
-    "/:id",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Club Lead",
 
-    authorizeRoles(
+    "Admin",
+  ),
 
-        "Club Lead",
-
-        "Admin"
-
-    ),
-
-    deleteImage
-
+  deleteImage,
 );
-
 
 module.exports = router;

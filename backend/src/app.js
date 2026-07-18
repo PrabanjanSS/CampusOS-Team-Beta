@@ -6,26 +6,16 @@ const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const blogRoutes = require("./routes/blogRoutes");
-const projectRoutes =
-require("./routes/projectRoutes");
-const announcementRoutes =
-require("./routes/announcementRoutes");
-const galleryRoutes =
-require("./routes/galleryRoutes");
-const leaderboardRoutes =
-require("./routes/leaderboardRoutes");
-const memberRoutes =
-require("./routes/memberRoutes");
-const adminRoutes =
-require("./routes/adminRoutes");
-const reportRoutes =
-require("./routes/reportRoutes");
-const pollRoutes =
-require("./routes/pollRoutes");
-
+const projectRoutes = require("./routes/projectRoutes");
+const announcementRoutes = require("./routes/announcementRoutes");
+const galleryRoutes = require("./routes/galleryRoutes");
+const leaderboardRoutes = require("./routes/leaderboardRoutes");
+const memberRoutes = require("./routes/memberRoutes");
+const adminRoutes = require("./routes/adminRoutes");
+const reportRoutes = require("./routes/reportRoutes");
+const pollRoutes = require("./routes/pollRoutes");
 
 const app = express();
-
 
 // Middlewares
 
@@ -33,99 +23,65 @@ app.use(cors());
 
 app.use(express.json());
 
-
 // Routes
 
-app.use(
-    "/api/auth",
-    authRoutes
-);
+app.use("/api/auth", authRoutes);
 
+app.use("/api/events", eventRoutes);
 
-app.use(
-    "/api/events",
-    eventRoutes
-);
-
+app.use("/api/blogs", blogRoutes);
 
 app.use(
-    "/api/blogs",
-    blogRoutes
+  "/api/projects",
+
+  projectRoutes,
 );
 
 app.use(
+  "/api/announcements",
 
-    "/api/projects",
-
-    projectRoutes
-
+  announcementRoutes,
 );
 
 app.use(
+  "/api/gallery",
 
-    "/api/announcements",
-
-    announcementRoutes
-
+  galleryRoutes,
 );
 
 app.use(
+  "/api/leaderboard",
 
-    "/api/gallery",
+  leaderboardRoutes,
+);
+app.use(
+  "/api/members",
 
-    galleryRoutes
-
+  memberRoutes,
 );
 
 app.use(
+  "/api/admin",
 
-    "/api/leaderboard",
-
-    leaderboardRoutes
-
-);
-app.use(
-
-    "/api/members",
-
-    memberRoutes
-
+  adminRoutes,
 );
 
 app.use(
+  "/api/reports",
 
-    "/api/admin",
-
-    adminRoutes
-
-);
-
-
-app.use(
-
-    "/api/reports",
-
-    reportRoutes
-
+  reportRoutes,
 );
 
 app.use(
+  "/api/polls",
 
-    "/api/polls",
-
-    pollRoutes
-
+  pollRoutes,
 );
 
 // Default Route
 
 app.get("/", (req, res) => {
-
-    res.send("CampusOS Backend is Running.");
-
+  res.send("CampusOS Backend is Running.");
 });
-
-
-
 
 module.exports = app;

@@ -4,22 +4,14 @@ const router = express.Router();
 
 const protect = require("../middlewares/authMiddleware");
 
-const{
-
-    getDashboardStats
-
-}=require("../controllers/adminController");
-
+const { getDashboardStats } = require("../controllers/adminController");
 
 router.get(
+  "/dashboard",
 
-    "/dashboard",
+  protect,
 
-    protect,
-
-    getDashboardStats
-
+  getDashboardStats,
 );
-
 
 module.exports = router;

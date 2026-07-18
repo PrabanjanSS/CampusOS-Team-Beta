@@ -7,144 +7,97 @@ const protect = require("../middlewares/authMiddleware");
 const authorizeRoles = require("../middlewares/roleMiddleware");
 
 const {
-
-    createProject,
-    getAllProjects,
-    getSingleProject,
-    updateProject,
-    deleteProject,
-    approveProject,
-    rejectProject,
-    getPendingProjects
-
+  createProject,
+  getAllProjects,
+  getSingleProject,
+  updateProject,
+  deleteProject,
+  approveProject,
+  rejectProject,
+  getPendingProjects,
 } = require("../controllers/projectController");
-
 
 // CREATE PROJECT
 router.post(
+  "/",
 
-    "/",
+  protect,
 
-    protect,
+  authorizeRoles("Club Lead", "Faculty", "Admin"),
 
-    authorizeRoles(
-
-        "Club Lead",
-        "Faculty",
-        "Admin"
-    ),
-
-    createProject
-
+  createProject,
 );
-
 
 // GET ALL APPROVED PROJECTS
 router.get(
+  "/",
 
-    "/",
-
-    getAllProjects
-
+  getAllProjects,
 );
 
 router.get(
+  "/pending",
 
-    "/pending",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Faculty",
 
-    authorizeRoles(
+    "Admin",
+  ),
 
-        "Faculty",
-
-        "Admin"
-
-    ),
-
-    getPendingProjects
-
+  getPendingProjects,
 );
-
 
 // GET SINGLE PROJECT
 router.get(
+  "/:id",
 
-    "/:id",
-
-    getSingleProject
-
+  getSingleProject,
 );
-
 
 // UPDATE PROJECT
 router.put(
+  "/:id",
 
-    "/:id",
+  protect,
 
-    protect,
+  authorizeRoles("Club Lead", "Faculty", "Admin"),
 
-    authorizeRoles(
-        "Club Lead",
-        "Faculty",
-        "Admin"
-    ),
-
-    updateProject
-
+  updateProject,
 );
-
 
 // DELETE PROJECT
 router.delete(
+  "/:id",
 
-    "/:id",
+  protect,
 
-    protect,
+  authorizeRoles("Admin"),
 
-    authorizeRoles(
-        "Admin"
-    ),
-
-    deleteProject
-
+  deleteProject,
 );
-
 
 // APPROVE PROJECT
 router.put(
+  "/approve/:id",
 
-    "/approve/:id",
+  protect,
 
-    protect,
+  authorizeRoles("Faculty", "Admin"),
 
-    authorizeRoles(
-        "Faculty",
-        "Admin"
-    ),
-
-    approveProject
-
+  approveProject,
 );
-
 
 // REJECT PROJECT
 router.put(
+  "/reject/:id",
 
-    "/reject/:id",
+  protect,
 
-    protect,
+  authorizeRoles("Faculty", "Admin"),
 
-    authorizeRoles(
-        "Faculty",
-        "Admin"
-    ),
-
-    rejectProject
-
+  rejectProject,
 );
-
-
-
 
 module.exports = router;

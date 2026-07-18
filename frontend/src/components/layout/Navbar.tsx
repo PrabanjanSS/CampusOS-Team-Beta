@@ -1,21 +1,28 @@
-import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, ChevronDown, LogOut, UserRound, Settings, Menu } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
-import { useScrollPosition } from '../../hooks';
-import { Avatar } from '../ui/Avatar';
-import { Badge } from '../ui/Badge';
-import { mockNotifications } from '../../utils/mockData';
-import { APP_NAME, NAV_ITEMS_BY_ROLE } from '../../utils/constants';
-import { cn } from '../../utils/cn';
-import type { NotificationItem } from '../../types';
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Bell,
+  ChevronDown,
+  LogOut,
+  UserRound,
+  Settings,
+  Menu,
+} from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
+import { useScrollPosition } from "../../hooks";
+import { Avatar } from "../ui/Avatar";
+import { Badge } from "../ui/Badge";
+import { mockNotifications } from "../../utils/mockData";
+import { APP_NAME, NAV_ITEMS_BY_ROLE } from "../../utils/constants";
+import { cn } from "../../utils/cn";
+import type { NotificationItem } from "../../types";
 
 interface NavbarProps {
   onMenuClick: () => void;
 }
 
-const NOTIFICATIONS_KEY = 'campusos_notifications';
+const NOTIFICATIONS_KEY = "campusos_notifications";
 
 function getNotifications(): NotificationItem[] {
   try {
@@ -33,13 +40,18 @@ export function Navbar({ onMenuClick }: NavbarProps) {
   const navigate = useNavigate();
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
-  const [notifications, setNotifications] = useState<NotificationItem[]>(getNotifications);
+  const [notifications, setNotifications] =
+    useState<NotificationItem[]>(getNotifications);
 
-  const role = user?.role ?? 'member';
+  const role = user?.role ?? "member";
   const navItems = NAV_ITEMS_BY_ROLE[role];
-  const current = navItems.find((n) =>
-    location.pathname === n.to ||
-    (n.to !== '/app/member' && n.to !== '/app/lead' && n.to !== '/app/faculty' && location.pathname.startsWith(n.to))
+  const current = navItems.find(
+    (n) =>
+      location.pathname === n.to ||
+      (n.to !== "/app/member" &&
+        n.to !== "/app/lead" &&
+        n.to !== "/app/faculty" &&
+        location.pathname.startsWith(n.to)),
   );
 
   const unread = notifications.filter((n) => !n.read).length;
@@ -50,7 +62,9 @@ export function Navbar({ onMenuClick }: NavbarProps) {
   };
 
   const markRead = (id: string) => {
-    saveNotifications(notifications.map((n) => n.id === id ? { ...n, read: true } : n));
+    saveNotifications(
+      notifications.map((n) => (n.id === id ? { ...n, read: true } : n)),
+    );
   };
 
   const markAllRead = () => {
@@ -59,19 +73,19 @@ export function Navbar({ onMenuClick }: NavbarProps) {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate("/");
   };
 
   return (
     <motion.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className={cn(
-        'sticky top-0 z-50 transition-all duration-300',
+        "sticky top-0 z-50 transition-all duration-300",
         scrolled
-          ? 'border-b border-border-soft bg-cream/80 backdrop-blur-xl shadow-soft'
-          : 'bg-transparent'
+          ? "border-b border-border-soft bg-cream/80 backdrop-blur-xl shadow-soft"
+          : "bg-transparent",
       )}
     >
       <div className="flex h-16 items-center gap-3 px-4 sm:px-6">
@@ -87,19 +101,20 @@ export function Navbar({ onMenuClick }: NavbarProps) {
         <div className="hidden items-center gap-2 text-sm md:flex">
           <span className="font-bold text-navy">{APP_NAME}</span>
           <span className="text-ink-soft/40">/</span>
-          <span className="font-medium capitalize text-ink-soft">{current?.label ?? 'Dashboard'}</span>
+          <span className="font-medium capitalize text-ink-soft">
+            {current?.label ?? "Dashboard"}
+          </span>
         </div>
 
         <div className="flex-1" />
 
-
-
-
-
         {/* Notifications */}
         <div className="relative">
           <button
-            onClick={() => { setNotifOpen((o) => !o); setProfileOpen(false); }}
+            onClick={() => {
+              setNotifOpen((o) => !o);
+              setProfileOpen(false);
+            }}
             className="relative flex h-9 w-9 items-center justify-center rounded-lg text-ink-soft transition-colors hover:bg-cream-200 hover:text-navy"
           >
             <Bell className="h-5 w-5" />
@@ -119,7 +134,9 @@ export function Navbar({ onMenuClick }: NavbarProps) {
               >
                 <div className="flex items-center justify-between border-b border-border-soft px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-ink">Notifications</span>
+                    <span className="text-sm font-semibold text-ink">
+                      Notifications
+                    </span>
                     {unread > 0 && <Badge tone="navy">{unread} new</Badge>}
                   </div>
                   {unread > 0 && (
@@ -141,16 +158,24 @@ export function Navbar({ onMenuClick }: NavbarProps) {
                         setNotifOpen(false);
                       }}
                       className={cn(
-                        'w-full text-left rounded-xl p-3 transition-colors hover:bg-cream-100 focus:outline-none',
-                        !n.read && 'bg-navy/[0.03]'
+                        "w-full text-left rounded-xl p-3 transition-colors hover:bg-cream-100 focus:outline-none",
+                        !n.read && "bg-navy/[0.03]",
                       )}
                     >
                       <div className="flex items-start justify-between gap-2">
-                        <p className="text-sm font-semibold text-ink">{n.title}</p>
-                        {!n.read && <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-navy" />}
+                        <p className="text-sm font-semibold text-ink">
+                          {n.title}
+                        </p>
+                        {!n.read && (
+                          <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-navy" />
+                        )}
                       </div>
-                      <p className="mt-0.5 text-xs text-ink-soft">{n.description}</p>
-                      <p className="mt-1 text-[0.7rem] text-ink-soft/70">{n.time}</p>
+                      <p className="mt-0.5 text-xs text-ink-soft">
+                        {n.description}
+                      </p>
+                      <p className="mt-1 text-[0.7rem] text-ink-soft/70">
+                        {n.time}
+                      </p>
                     </button>
                   ))}
                 </div>
@@ -162,13 +187,24 @@ export function Navbar({ onMenuClick }: NavbarProps) {
         {/* Profile */}
         <div className="relative">
           <button
-            onClick={() => { setProfileOpen((o) => !o); setNotifOpen(false); }}
+            onClick={() => {
+              setProfileOpen((o) => !o);
+              setNotifOpen(false);
+            }}
             className="flex items-center gap-2 rounded-xl p-1 pr-2 transition-colors hover:bg-cream-200"
           >
-            <Avatar name={user?.name ?? 'User'} src={user?.avatarUrl} size="sm" />
+            <Avatar
+              name={user?.name ?? "User"}
+              src={user?.avatarUrl}
+              size="sm"
+            />
             <div className="hidden text-left sm:block">
-              <p className="text-xs font-semibold leading-tight text-ink">{user?.name?.split(' ')[0]}</p>
-              <p className="text-[0.7rem] capitalize leading-tight text-ink-soft">{user?.role}</p>
+              <p className="text-xs font-semibold leading-tight text-ink">
+                {user?.name?.split(" ")[0]}
+              </p>
+              <p className="text-[0.7rem] capitalize leading-tight text-ink-soft">
+                {user?.role}
+              </p>
             </div>
             <ChevronDown className="hidden h-4 w-4 text-ink-soft sm:block" />
           </button>
@@ -182,8 +218,12 @@ export function Navbar({ onMenuClick }: NavbarProps) {
               >
                 <div className="px-3 py-2.5">
                   <p className="text-sm font-semibold text-ink">{user?.name}</p>
-                  <p className="truncate text-xs text-ink-soft">{user?.email}</p>
-                  <p className="mt-1 text-[0.7rem] capitalize font-medium text-ink-soft/70">{user?.role}</p>
+                  <p className="truncate text-xs text-ink-soft">
+                    {user?.email}
+                  </p>
+                  <p className="mt-1 text-[0.7rem] capitalize font-medium text-ink-soft/70">
+                    {user?.role}
+                  </p>
                 </div>
                 <div className="my-1 h-px bg-border-soft" />
                 <Link
@@ -193,7 +233,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
                 >
                   <UserRound className="h-4 w-4 text-ink-soft" /> Profile
                 </Link>
-                {role === 'faculty' && (
+                {role === "faculty" && (
                   <Link
                     to="/app/settings"
                     onClick={() => setProfileOpen(false)}

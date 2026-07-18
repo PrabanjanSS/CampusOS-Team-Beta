@@ -2,150 +2,111 @@ const express = require("express");
 
 const router = express.Router();
 
-const protect =
-require("../middlewares/authMiddleware");
+const protect = require("../middlewares/authMiddleware");
 
-const authorizeRoles =
-require("../middlewares/roleMiddleware");
+const authorizeRoles = require("../middlewares/roleMiddleware");
 
-
-const{
-
-    createReport,
-    getAllReports,
-    getSingleReport,
-    getPendingReports,
-    approveReport,
-    rejectReport
-
-}=require("../controllers/reportController");
-
-
+const {
+  createReport,
+  getAllReports,
+  getSingleReport,
+  getPendingReports,
+  approveReport,
+  rejectReport,
+} = require("../controllers/reportController");
 
 // CREATE REPORT
 
 router.post(
+  "/",
 
-    "/",
+  protect,
 
-    protect,
+  authorizeRoles("Club Lead"),
 
-    authorizeRoles(
-
-        "Club Lead"
-
-    ),
-
-    createReport
-
+  createReport,
 );
-
 
 // GET ALL REPORTS
 
 router.get(
+  "/",
 
-    "/",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Faculty",
 
-    authorizeRoles(
+    "Admin",
+  ),
 
-        "Faculty",
-
-        "Admin"
-
-    ),
-
-    getAllReports
-
+  getAllReports,
 );
-
 
 // GET PENDING REPORTS
 
 router.get(
+  "/pending",
 
-    "/pending",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Faculty",
 
-    authorizeRoles(
+    "Admin",
+  ),
 
-        "Faculty",
-
-        "Admin"
-
-    ),
-
-    getPendingReports
-
+  getPendingReports,
 );
-
 
 // GET SINGLE REPORT
 
 router.get(
+  "/:id",
 
-    "/:id",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Faculty",
 
-    authorizeRoles(
+    "Admin",
 
-        "Faculty",
+    "Club Lead",
+  ),
 
-        "Admin",
-
-        "Club Lead"
-
-    ),
-
-    getSingleReport
-
+  getSingleReport,
 );
-
 
 // APPROVE REPORT
 
 router.put(
+  "/approve/:id",
 
-    "/approve/:id",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Faculty",
 
-    authorizeRoles(
+    "Admin",
+  ),
 
-        "Faculty",
-
-        "Admin"
-
-    ),
-
-    approveReport
-
+  approveReport,
 );
-
 
 // REJECT REPORT
 
 router.put(
+  "/reject/:id",
 
-    "/reject/:id",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Faculty",
 
-    authorizeRoles(
+    "Admin",
+  ),
 
-        "Faculty",
-
-        "Admin"
-
-    ),
-
-    rejectReport
-
+  rejectReport,
 );
-
 
 module.exports = router;

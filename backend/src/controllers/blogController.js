@@ -1,336 +1,209 @@
 const Blog = require("../models/Blog");
 
+const createBlog = async (req, res) => {
+  try {
+    let status = "Pending";
 
-const createBlog = async(req,res)=>{
-
-    try{
-
-        let status = "Pending";
-
-
-        if(
-
-            req.user.role === "Club Lead"
-
-            ||
-
-            req.user.role === "Faculty"
-
-            ||
-
-            req.user.role === "Admin"
-
-        ){
-
-            status = "Approved";
-
-        }
-
-
-        const blog = await Blog.create({
-
-            ...req.body,
-
-            createdBy:req.user._id,
-
-            status
-
-        });
-
-
-        return res.status(201).json({
-
-            success:true,
-            blog
-
-        });
-
+    if (
+      req.user.role === "Club Lead" ||
+      req.user.role === "Faculty" ||
+      req.user.role === "Admin"
+    ) {
+      status = "Approved";
     }
 
-    catch(error){
+    const blog = await Blog.create({
+      ...req.body,
 
-        return res.status(500).json({
+      createdBy: req.user._id,
 
-            success:false,
-            message:error.message
+      status,
+    });
 
-        });
-
-    }
-
+    return res.status(201).json({
+      success: true,
+      blog,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
+const getAllBlogs = async (req, res) => {
+  try {
+    const blogs = await Blog.find();
 
-
-const getAllBlogs = async(req,res)=>{
-
-    try{
-
-        const blogs = await Blog.find();
-
-        return res.status(200).json({
-
-            success:true,
-            blogs
-
-        });
-
-    }
-
-    catch(error){
-
-        return res.status(500).json({
-
-            success:false,
-            message:error.message
-
-        });
-
-    }
-
+    return res.status(200).json({
+      success: true,
+      blogs,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
+const getSingleBlog = async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
 
+    if (!blog) {
+      return res.status(404).json({
+        success: false,
 
-const getSingleBlog = async(req,res)=>{
-
-    try{
-
-        const blog = await Blog.findById(
-            req.params.id
-        );
-
-        return res.status(200).json({
-
-            success:true,
-            blog
-
-        });
-
+        message: "Blog not found.",
+      });
     }
 
-    catch(error){
-
-        return res.status(500).json({
-
-            success:false,
-            message:error.message
-
-        });
-
-    }
-
+    return res.status(200).json({
+      success: true,
+      blog,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
+const updateBlog = async (req, res) => {
+  try {
+    const blog = await Blog.findByIdAndUpdate(
+      req.params.id,
 
+      req.body,
 
-const updateBlog = async(req,res)=>{
+      {
+        new: true,
+      },
+    );
 
-    try{
+    if (!blog) {
+      return res.status(404).json({
+        success: false,
 
-        const blog = await Blog.findByIdAndUpdate(
-
-            req.params.id,
-
-            req.body,
-
-            {
-                new:true
-            }
-
-        );
-
-
-        return res.status(200).json({
-
-            success:true,
-            blog
-
-        });
-
+        message: "Blog not found.",
+      });
     }
 
-    catch(error){
-
-        return res.status(500).json({
-
-            success:false,
-            message:error.message
-
-        });
-
-    }
-
+    return res.status(200).json({
+      success: true,
+      blog,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
-const approveBlog = async(req,res)=>{
+const approveBlog = async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
 
-    try{
+    if (!blog) {
+      return res.status(404).json({
+        success: false,
 
-        const blog = await Blog.findById(
-
-            req.params.id
-
-        );
-
-
-        if(!blog){
-
-            return res.status(404).json({
-
-                success:false,
-
-                message:"Blog not found."
-
-            });
-
-        }
-
-
-        blog.status = "Approved";
-
-
-        blog.facultyRemarks =
-
-        req.body.facultyRemarks || "";
-
-
-        await blog.save();
-
-
-        return res.status(200).json({
-
-            success:true,
-
-            message:"Blog Approved.",
-
-            blog
-
-        });
-
+        message: "Blog not found.",
+      });
     }
 
-    catch(error){
+    blog.status = "Approved";
 
-        return res.status(500).json({
+    blog.facultyRemarks = req.body.facultyRemarks || "";
 
-            success:false,
+    await blog.save();
 
-            message:error.message
+    return res.status(200).json({
+      success: true,
 
-        });
+      message: "Blog Approved.",
 
-    }
+      blog,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
 
+      message: error.message,
+    });
+  }
 };
 
+const rejectBlog = async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
 
+    if (!blog) {
+      return res.status(404).json({
+        success: false,
 
-const rejectBlog = async(req,res)=>{
-
-    try{
-
-
-        const blog = await Blog.findById(
-
-            req.params.id
-
-        );
-
-
-        if(!blog){
-
-            return res.status(404).json({
-
-                success:false,
-
-                message:"Blog not found."
-
-            });
-
-        }
-
-
-        blog.status = "Rejected";
-
-
-        blog.facultyRemarks =
-
-        req.body.facultyRemarks || "";
-
-
-        await blog.save();
-
-
-        return res.status(200).json({
-
-            success:true,
-
-            message:"Blog Rejected.",
-
-            blog
-
-        });
-
+        message: "Blog not found.",
+      });
     }
 
-    catch(error){
+    blog.status = "Rejected";
 
-        return res.status(500).json({
+    blog.facultyRemarks = req.body.facultyRemarks || "";
 
-            success:false,
+    await blog.save();
 
-            message:error.message
+    return res.status(200).json({
+      success: true,
 
-        });
+      message: "Blog Rejected.",
 
-    }
+      blog,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
 
+      message: error.message,
+    });
+  }
 };
 
-const deleteBlog = async(req,res)=>{
+const deleteBlog = async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
 
-    try{
+    if (!blog) {
+      return res.status(404).json({
+        success: false,
 
-        await Blog.findByIdAndDelete(
-
-            req.params.id
-
-        );
-
-
-        return res.status(200).json({
-
-            success:true,
-            message:"Blog Deleted"
-
-        });
-
+        message: "Blog not found.",
+      });
     }
 
-    catch(error){
+    await Blog.findByIdAndDelete(req.params.id);
 
-        return res.status(500).json({
-
-            success:false,
-            message:error.message
-
-        });
-
-    }
-
+    return res.status(200).json({
+      success: true,
+      message: "Blog Deleted",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
-
-
-module.exports={
-
-    createBlog,
-    getAllBlogs,
-    getSingleBlog,
-    updateBlog,
-    deleteBlog,
-    approveBlog,
-    rejectBlog
-
+module.exports = {
+  createBlog,
+  getAllBlogs,
+  getSingleBlog,
+  updateBlog,
+  deleteBlog,
+  approveBlog,
+  rejectBlog,
 };

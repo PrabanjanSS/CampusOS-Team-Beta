@@ -1,9 +1,17 @@
-import { Loader2 } from 'lucide-react';
-import { cn } from '../../utils/cn';
+import { Loader2 } from "lucide-react";
+import { cn } from "../../utils/cn";
 
-export function Spinner({ size = 'md', className }: { size?: 'sm' | 'md' | 'lg'; className?: string }) {
-  const sz = { sm: 'h-4 w-4', md: 'h-6 w-6', lg: 'h-8 w-8' };
-  return <Loader2 className={cn('animate-spin text-navy', sz[size], className)} />;
+export function Spinner({
+  size = "md",
+  className,
+}: {
+  size?: "sm" | "md" | "lg";
+  className?: string;
+}) {
+  const sz = { sm: "h-4 w-4", md: "h-6 w-6", lg: "h-8 w-8" };
+  return (
+    <Loader2 className={cn("animate-spin text-navy", sz[size], className)} />
+  );
 }
 
 export function PageLoader() {
@@ -21,7 +29,7 @@ export function PageLoader() {
 }
 
 export function Skeleton({ className }: { className?: string }) {
-  return <div className={cn('shimmer-bg rounded-lg', className)} />;
+  return <div className={cn("shimmer-bg rounded-lg", className)} />;
 }
 
 export function SkeletonCard() {

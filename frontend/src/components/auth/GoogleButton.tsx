@@ -70,9 +70,7 @@ export default function GoogleButton() {
       >
         <GoogleIcon />
 
-        {loading
-          ? "Signing in..."
-          : "Continue with Google"}
+        {loading ? "Signing in..." : "Continue with Google"}
       </button>
     </>
   );

@@ -1,145 +1,107 @@
 const express = require("express");
 
 const router = express.Router();
-const authorizeRoles =
-require("../middlewares/roleMiddleware");
+const authorizeRoles = require("../middlewares/roleMiddleware");
 const protect = require("../middlewares/authMiddleware");
 
-
-
-const{
-
-    createBlog,
-    getAllBlogs,
-    getSingleBlog,
-    updateBlog,
-    deleteBlog,
-    approveBlog,
-    rejectBlog
-
-}=require("../controllers/blogController");
-
-
+const {
+  createBlog,
+  getAllBlogs,
+  getSingleBlog,
+  updateBlog,
+  deleteBlog,
+  approveBlog,
+  rejectBlog,
+} = require("../controllers/blogController");
 
 router.post(
+  "/",
 
-    "/",
+  protect,
 
-    protect,
-
-authorizeRoles(
-
+  authorizeRoles(
     "Member",
 
     "Club Lead",
 
     "Faculty",
 
-    "Admin"
+    "Admin",
+  ),
 
-),
-
-    createBlog
-
+  createBlog,
 );
-
 
 router.get(
+  "/",
 
-    "/",
-
-    getAllBlogs
-
+  getAllBlogs,
 );
-
 
 router.get(
+  "/:id",
 
-    "/:id",
-
-    getSingleBlog
-
+  getSingleBlog,
 );
-
 
 router.put(
+  "/:id",
 
-    "/:id",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Club Lead",
 
-    authorizeRoles(
+    "Admin",
 
-        "Club Lead",
+    "Faculty",
+  ),
 
-        "Admin",
-
-        "Faculty"
-
-    ),
-
-    updateBlog
-
+  updateBlog,
 );
-
 
 router.delete(
+  "/:id",
 
-    "/:id",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Club Lead",
 
-    authorizeRoles(
+    "Admin",
 
-        "Club Lead",
+    "Faculty",
+  ),
 
-        "Admin",
-
-        "Faculty"
-
-    ),
-
-    deleteBlog
-
+  deleteBlog,
 );
 
 router.put(
+  "/approve/:id",
 
-    "/approve/:id",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Faculty",
 
-    authorizeRoles(
+    "Admin",
+  ),
 
-        "Faculty",
-
-        "Admin"
-
-    ),
-
-    approveBlog
-
+  approveBlog,
 );
-
-
 
 router.put(
+  "/reject/:id",
 
-    "/reject/:id",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Faculty",
 
-    authorizeRoles(
+    "Admin",
+  ),
 
-        "Faculty",
-
-        "Admin"
-
-    ),
-
-    rejectBlog
-
+  rejectBlog,
 );
 
-
-module.exports=router;
+module.exports = router;

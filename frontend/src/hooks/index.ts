@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 export function useCountUp(target: number, duration = 1200, start = true) {
   const [value, setValue] = useState(0);
@@ -27,22 +27,22 @@ export function useScrollPosition() {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
   return scrolled;
 }
 
 export function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(
-    typeof window !== 'undefined' ? window.matchMedia(query).matches : false
+    typeof window !== "undefined" ? window.matchMedia(query).matches : false,
   );
   useEffect(() => {
     const m = window.matchMedia(query);
     const handler = () => setMatches(m.matches);
     handler();
-    m.addEventListener('change', handler);
-    return () => m.removeEventListener('change', handler);
+    m.addEventListener("change", handler);
+    return () => m.removeEventListener("change", handler);
   }, [query]);
   return matches;
 }

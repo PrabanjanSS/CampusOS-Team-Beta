@@ -10,11 +10,7 @@ interface Props {
   onCreate: (event: PlannerEvent) => void;
 }
 
-export default function CreateEventModal({
-  open,
-  onClose,
-  onCreate,
-}: Props) {
+export default function CreateEventModal({ open, onClose, onCreate }: Props) {
   const { toast } = useToast();
 
   const [title, setTitle] = useState("");
@@ -50,13 +46,7 @@ export default function CreateEventModal({
   };
 
   const handleCreate = () => {
-    if (
-      !title ||
-      !startDate ||
-      !startTime ||
-      !venue ||
-      !organizer
-    ) {
+    if (!title || !startDate || !startTime || !venue || !organizer) {
       toast({
         title: "Missing Fields",
         description: "Please fill all required fields.",
@@ -206,7 +196,7 @@ export default function CreateEventModal({
                   | "Meeting"
                   | "Competition"
                   | "Hackathon"
-                  | "Deadline"
+                  | "Deadline",
               )
             }
             className="input-base w-full"

@@ -14,35 +14,25 @@ import type {
 } from "../types";
 
 export const authService = {
-  async login(
-    payload: LoginPayload
-  ): Promise<AuthSession> {
+  async login(payload: LoginPayload): Promise<AuthSession> {
+    const credential = await signInWithEmailAndPassword(
+      auth,
+      payload.email,
+      payload.password,
+    );
 
-    const credential =
-      await signInWithEmailAndPassword(
-        auth,
-        payload.email,
-        payload.password
-      );
+    const firebaseUser = credential.user;
 
-    const firebaseUser =
-      credential.user;
-
-    const token =
-      await firebaseUser.getIdToken();
+    const token = await firebaseUser.getIdToken();
 
     const user: User = {
       id: firebaseUser.uid,
 
-      name:
-        firebaseUser.displayName ??
-        "Campus User",
+      name: firebaseUser.displayName ?? "Campus User",
 
-      email:
-        firebaseUser.email ?? "",
+      email: firebaseUser.email ?? "",
 
-      role:
-        payload.role,
+      role: payload.role,
 
       department: "",
 
@@ -55,46 +45,31 @@ export const authService = {
     };
   },
 
-  async register(
-    payload: RegisterPayload
-  ): Promise<AuthSession> {
-
-    const credential =
-      await createUserWithEmailAndPassword(
-        auth,
-        payload.email,
-        payload.password
-      );
-
-    await updateProfile(
-      credential.user,
-      {
-        displayName:
-          payload.name,
-      }
+  async register(payload: RegisterPayload): Promise<AuthSession> {
+    const credential = await createUserWithEmailAndPassword(
+      auth,
+      payload.email,
+      payload.password,
     );
 
-    const token =
-      await credential.user.getIdToken();
+    await updateProfile(credential.user, {
+      displayName: payload.name,
+    });
+
+    const token = await credential.user.getIdToken();
 
     const user: User = {
-      id:
-        credential.user.uid,
+      id: credential.user.uid,
 
-      name:
-        payload.name,
+      name: payload.name,
 
-      email:
-        payload.email,
+      email: payload.email,
 
-      role:
-        payload.role,
+      role: payload.role,
 
-      department:
-        payload.department,
+      department: payload.department,
 
-      year:
-        payload.year,
+      year: payload.year,
     };
 
     return {
@@ -103,26 +78,17 @@ export const authService = {
     };
   },
 
-  async googleLogin(
-    firebaseUser: any
-  ): Promise<AuthSession> {
-
-    const token =
-      await firebaseUser.getIdToken();
+  async googleLogin(firebaseUser: any): Promise<AuthSession> {
+    const token = await firebaseUser.getIdToken();
 
     const user: User = {
-      id:
-        firebaseUser.uid,
+      id: firebaseUser.uid,
 
-      name:
-        firebaseUser.displayName ??
-        "Google User",
+      name: firebaseUser.displayName ?? "Google User",
 
-      email:
-        firebaseUser.email ?? "",
+      email: firebaseUser.email ?? "",
 
-      role:
-        "member",
+      role: "member",
 
       department: "",
 
@@ -136,17 +102,12 @@ export const authService = {
   },
 
   async getProfile() {
-    throw new Error(
-      "Profile endpoint not connected."
-    );
+    throw new Error("Profile endpoint not connected.");
   },
 
   async getDashboard() {
-    throw new Error(
-      "Dashboard endpoint not connected."
-    );
+    throw new Error("Dashboard endpoint not connected.");
   },
 };
 
 export default authService;
-

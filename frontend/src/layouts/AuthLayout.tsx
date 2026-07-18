@@ -1,12 +1,12 @@
-import type { ReactNode } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowLeft, Sparkles, Check } from 'lucide-react';
-import { AuroraBackground } from '../components/layout/AuroraBackground';
-import { APP_NAME, APP_TAGLINE } from '../utils/constants';
+import type { ReactNode } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { ArrowLeft, Check } from "lucide-react";
+import { AuroraBackground } from "../components/layout/AuroraBackground";
+import { APP_NAME, APP_TAGLINE } from "../utils/constants";
 
 interface AuthLayoutProps {
-  role: 'member' | 'lead' | 'faculty';
+  role: "member" | "lead" | "faculty";
   title: string;
   subtitle: string;
   children: ReactNode;
@@ -15,12 +15,31 @@ interface AuthLayoutProps {
 }
 
 const roleHighlights: Record<string, string[]> = {
-  member:  ['Join events & track projects', 'Build a public portfolio', 'Earn badges & climb the leaderboard'],
-  lead:    ['Manage events & members',       'Publish announcements',    'Track club momentum'               ],
-  faculty: ['Oversee all clubs',             'Approve budgets & proposals', 'Mentor student leaders'         ],
+  member: [
+    "Join events & track projects",
+    "Build a public portfolio",
+    "Earn badges & climb the leaderboard",
+  ],
+  lead: [
+    "Manage events & members",
+    "Publish announcements",
+    "Track club momentum",
+  ],
+  faculty: [
+    "Oversee all clubs",
+    "Approve budgets & proposals",
+    "Mentor student leaders",
+  ],
 };
 
-export function AuthLayout({ role, title, subtitle, children, showSignupLink, signupPath }: AuthLayoutProps) {
+export function AuthLayout({
+  role,
+  title,
+  subtitle,
+  children,
+  showSignupLink,
+  signupPath,
+}: AuthLayoutProps) {
   return (
     <div className="relative min-h-screen lg:grid lg:grid-cols-2">
       {/* Left — brand */}
@@ -53,11 +72,11 @@ export function AuthLayout({ role, title, subtitle, children, showSignupLink, si
           className="relative max-w-md text-white"
         >
           <h2 className="text-balance text-3xl font-bold leading-tight">
-            {role === 'faculty'
-              ? 'Full visibility. Guided mentorship.'
-              : role === 'lead'
-              ? 'Lead your club like a product team.'
-              : 'Belong. Contribute. Get recognized.'}
+            {role === "faculty"
+              ? "Full visibility. Guided mentorship."
+              : role === "lead"
+                ? "Lead your club like a product team."
+                : "Belong. Contribute. Get recognized."}
           </h2>
           <ul className="mt-8 space-y-3.5">
             {roleHighlights[role].map((h, i) => (
@@ -101,14 +120,16 @@ export function AuthLayout({ role, title, subtitle, children, showSignupLink, si
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ type: 'spring', stiffness: 220, damping: 24 }}
+            transition={{ type: "spring", stiffness: 220, damping: 24 }}
             className="glass rounded-3xl p-8 shadow-lift"
           >
             <div className="mb-6">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-navy/8 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-navy">
                 {role}
               </span>
-              <h1 className="mt-3 text-2xl font-bold tracking-tight text-ink">{title}</h1>
+              <h1 className="mt-3 text-2xl font-bold tracking-tight text-ink">
+                {title}
+              </h1>
               <p className="mt-1.5 text-sm text-ink-soft">{subtitle}</p>
             </div>
             {children}
@@ -116,8 +137,11 @@ export function AuthLayout({ role, title, subtitle, children, showSignupLink, si
 
           {showSignupLink && signupPath && (
             <p className="mt-6 text-center text-sm text-ink-soft">
-              New to {APP_NAME}?{' '}
-              <Link to={signupPath} className="font-semibold text-navy hover:underline">
+              New to {APP_NAME}?{" "}
+              <Link
+                to={signupPath}
+                className="font-semibold text-navy hover:underline"
+              >
                 Create an account
               </Link>
             </p>

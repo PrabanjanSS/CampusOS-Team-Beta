@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
-import { cn } from '../../utils/cn';
+import { motion } from "framer-motion";
+import { cn } from "../../utils/cn";
 
 interface Column<T> {
   key: keyof T | string;
@@ -15,14 +15,25 @@ interface TableProps<T> {
   onRowClick?: (row: T) => void;
 }
 
-export function Table<T extends Record<string, unknown>>({ columns, data, rowKey, onRowClick }: TableProps<T>) {
+export function Table<T extends Record<string, unknown>>({
+  columns,
+  data,
+  rowKey,
+  onRowClick,
+}: TableProps<T>) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-border-soft bg-white shadow-card">
       <table className="w-full text-left text-sm">
         <thead>
           <tr className="border-b border-border-soft bg-cream-100/50">
             {columns.map((col) => (
-              <th key={String(col.key)} className={cn('px-5 py-3.5 text-xs font-semibold uppercase tracking-wide text-ink-soft', col.className)}>
+              <th
+                key={String(col.key)}
+                className={cn(
+                  "px-5 py-3.5 text-xs font-semibold uppercase tracking-wide text-ink-soft",
+                  col.className,
+                )}
+              >
                 {col.header}
               </th>
             ))}
@@ -37,13 +48,18 @@ export function Table<T extends Record<string, unknown>>({ columns, data, rowKey
               transition={{ delay: i * 0.04 }}
               onClick={() => onRowClick?.(row)}
               className={cn(
-                'border-b border-border-soft/60 transition-colors last:border-0',
-                onRowClick && 'cursor-pointer hover:bg-cream-100/60'
+                "border-b border-border-soft/60 transition-colors last:border-0",
+                onRowClick && "cursor-pointer hover:bg-cream-100/60",
               )}
             >
               {columns.map((col) => (
-                <td key={String(col.key)} className={cn('px-5 py-4 text-ink', col.className)}>
-                  {col.render ? col.render(row) : String(row[col.key as keyof T] ?? '')}
+                <td
+                  key={String(col.key)}
+                  className={cn("px-5 py-4 text-ink", col.className)}
+                >
+                  {col.render
+                    ? col.render(row)
+                    : String(row[col.key as keyof T] ?? "")}
                 </td>
               ))}
             </motion.tr>

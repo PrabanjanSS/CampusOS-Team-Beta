@@ -2,132 +2,95 @@ const express = require("express");
 
 const router = express.Router();
 
-const protect =
-require("../middlewares/authMiddleware");
+const protect = require("../middlewares/authMiddleware");
 
-const authorizeRoles =
-require("../middlewares/roleMiddleware");
+const authorizeRoles = require("../middlewares/roleMiddleware");
 
-
-const{
-
-    createPoll,
-    getAllPolls,
-    getSinglePoll,
-    votePoll,
-    updatePoll,
-    deletePoll
-
-}=require("../controllers/pollController");
-
-
+const {
+  createPoll,
+  getAllPolls,
+  getSinglePoll,
+  votePoll,
+  updatePoll,
+  deletePoll,
+} = require("../controllers/pollController");
 
 // CREATE POLL
 
 router.post(
+  "/",
 
-    "/",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Faculty",
 
-    authorizeRoles(
+    "Club Lead",
 
-        "Faculty",
+    "Admin",
+  ),
 
-        "Club Lead",
-
-        "Admin"
-
-    ),
-
-    createPoll
-
+  createPoll,
 );
-
 
 // GET ALL POLLS
 
 router.get(
+  "/",
 
-    "/",
-
-    getAllPolls
-
+  getAllPolls,
 );
-
 
 // GET SINGLE POLL
 
 router.get(
+  "/:id",
 
-    "/:id",
-
-    getSinglePoll
-
+  getSinglePoll,
 );
-
 
 // VOTE
 
 router.put(
+  "/vote/:id",
 
-    "/vote/:id",
+  protect,
 
-    protect,
+  authorizeRoles(
+    "Member",
 
-    authorizeRoles(
+    "Club Lead",
 
-        "Member",
+    "Faculty",
 
-        "Club Lead",
+    "Admin",
+  ),
 
-        "Faculty",
-
-        "Admin"
-
-    ),
-
-    votePoll
-
+  votePoll,
 );
-
 
 // UPDATE POLL
 
 router.put(
+  "/:id",
 
-    "/:id",
+  protect,
 
-    protect,
+  authorizeRoles("Admin"),
 
-    authorizeRoles(
-
-        "Admin"
-
-    ),
-
-    updatePoll
-
+  updatePoll,
 );
-
 
 // DELETE POLL
 
 router.delete(
+  "/:id",
 
-    "/:id",
+  protect,
 
-    protect,
+  authorizeRoles("Admin"),
 
-    authorizeRoles(
-
-        "Admin"
-
-    ),
-
-    deletePoll
-
+  deletePoll,
 );
-
 
 module.exports = router;

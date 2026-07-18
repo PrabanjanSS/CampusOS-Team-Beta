@@ -10,20 +10,14 @@ interface CalendarViewProps {
   events: PlannerEvent[];
 }
 
-export default function CalendarView({
-  events,
-}: CalendarViewProps) {
+export default function CalendarView({ events }: CalendarViewProps) {
   const [selectedEvent, setSelectedEvent] = useState<PlannerEvent | null>(null);
 
   return (
     <>
       <div className="card-surface p-5 bg-white">
         <FullCalendar
-          plugins={[
-            dayGridPlugin,
-            timeGridPlugin,
-            interactionPlugin,
-          ]}
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           height={640}
           dayMaxEvents={2}
@@ -42,13 +36,11 @@ export default function CalendarView({
             "cursor-pointer",
             "shadow-sm",
             "transition-transform",
-            "hover:scale-[1.01]"
+            "hover:scale-[1.01]",
           ]}
           events={events}
           eventClick={(info) => {
-            const clicked = events.find(
-              (event) => event.id === info.event.id
-            );
+            const clicked = events.find((event) => event.id === info.event.id);
             if (clicked) {
               setSelectedEvent(clicked);
             }

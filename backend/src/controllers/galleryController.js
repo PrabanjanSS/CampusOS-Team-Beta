@@ -1,149 +1,94 @@
 const Gallery = require("../models/Gallery");
 
+const createGallery = async (req, res) => {
+  try {
+    const gallery = await Gallery.create({
+      ...req.body,
 
-const createGallery = async(req,res)=>{
+      uploadedBy: req.user._id,
+    });
 
-    try{
-
-        const gallery = await Gallery.create({
-
-            ...req.body,
-
-            uploadedBy:req.user._id
-
-        });
-
-
-        return res.status(201).json({
-
-            success:true,
-            gallery
-
-        });
-
-    }
-
-    catch(error){
-
-        return res.status(500).json({
-
-            success:false,
-            message:error.message
-
-        });
-
-    }
-
+    return res.status(201).json({
+      success: true,
+      gallery,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
+const getAllGalleryImages = async (req, res) => {
+  try {
+    const gallery = await Gallery.find();
 
-
-const getAllGalleryImages = async(req,res)=>{
-
-    try{
-
-        const gallery = await Gallery.find();
-
-
-        return res.status(200).json({
-
-            success:true,
-            gallery
-
-        });
-
-    }
-
-    catch(error){
-
-        return res.status(500).json({
-
-            success:false,
-            message:error.message
-
-        });
-
-    }
-
+    return res.status(200).json({
+      success: true,
+      gallery,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
+const getSingleImage = async (req, res) => {
+  try {
+    const image = await Gallery.findById(req.params.id);
 
+    if (!image) {
+      return res.status(404).json({
+        success: false,
 
-const getSingleImage = async(req,res)=>{
-
-    try{
-
-        const image = await Gallery.findById(
-
-            req.params.id
-
-        );
-
-
-        return res.status(200).json({
-
-            success:true,
-            image
-
-        });
-
+        message: "Image not found.",
+      });
     }
 
-    catch(error){
-
-        return res.status(500).json({
-
-            success:false,
-            message:error.message
-
-        });
-
-    }
-
+    return res.status(200).json({
+      success: true,
+      image,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
+const deleteImage = async (req, res) => {
+  try {
+    const image = await Gallery.findById(req.params.id);
 
+    if (!image) {
+      return res.status(404).json({
+        success: false,
 
-const deleteImage = async(req,res)=>{
-
-    try{
-
-        await Gallery.findByIdAndDelete(
-
-            req.params.id
-
-        );
-
-
-        return res.status(200).json({
-
-            success:true,
-            message:"Image Deleted."
-
-        });
-
+        message: "Image not found.",
+      });
     }
 
-    catch(error){
+    await Gallery.findByIdAndDelete(req.params.id);
 
-        return res.status(500).json({
-
-            success:false,
-            message:error.message
-
-        });
-
-    }
-
+    return res.status(200).json({
+      success: true,
+      message: "Image Deleted.",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
-
-
-module.exports={
-
-    createGallery,
-    getAllGalleryImages,
-    getSingleImage,
-    deleteImage
-
+module.exports = {
+  createGallery,
+  getAllGalleryImages,
+  getSingleImage,
+  deleteImage,
 };

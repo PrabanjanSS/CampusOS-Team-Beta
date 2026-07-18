@@ -4,11 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Check,
-  User as UserIcon,
-  Lock,
-} from "lucide-react";
+import { Check, User as UserIcon, Lock } from "lucide-react";
 
 import { AuthLayout } from "../../layouts/AuthLayout";
 import type { Role } from "../../types";
@@ -20,63 +16,40 @@ import { Dropdown } from "../../components/ui/Dropdown";
 import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
 
-import {
-  DEPARTMENTS,
-  YEARS,
-  APP_NAME,
-} from "../../utils/constants";
+import { DEPARTMENTS, YEARS, APP_NAME } from "../../utils/constants";
 
 import { passwordStrength } from "../../utils/cn";
 
 const step1Schema = z.object({
-  name: z
-    .string()
-    .min(2, "Enter your full name"),
+  name: z.string().min(2, "Enter your full name"),
 
-  email: z
-    .string()
-    .email("Enter a valid email"),
+  email: z.string().email("Enter a valid email"),
 
-  department: z
-    .string()
-    .min(1, "Select a department"),
+  department: z.string().min(1, "Select a department"),
 
-  year: z
-    .string()
-    .min(1, "Select your year"),
+  year: z.string().min(1, "Select your year"),
 });
 
-const step2Schema = z.object({
-  password: z
-    .string()
-    .min(8, "Minimum 8 characters")
-    .regex(/[A-Z]/, "Add an uppercase letter")
-    .regex(/[0-9]/, "Add a number"),
+const step2Schema = z
+  .object({
+    password: z
+      .string()
+      .min(8, "Minimum 8 characters")
+      .regex(/[A-Z]/, "Add an uppercase letter")
+      .regex(/[0-9]/, "Add a number"),
 
-  confirmPassword: z
-    .string(),
+    confirmPassword: z.string(),
 
-  terms: z
-    .boolean()
-    .refine((v) => v, "Accept Terms & Conditions"),
-
-}).refine(
-  (data) =>
-    data.password ===
-    data.confirmPassword,
-  {
+    terms: z.boolean().refine((v) => v, "Accept Terms & Conditions"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
-  }
-);
+  });
 
-type Step1 = z.infer<
-  typeof step1Schema
->;
+type Step1 = z.infer<typeof step1Schema>;
 
-type Step2 = z.infer<
-  typeof step2Schema
->;
+type Step2 = z.infer<typeof step2Schema>;
 
 const steps = [
   {
@@ -159,14 +132,14 @@ export default function SignupPage({ role = "member" }: { role?: Role }) {
 
       toast({
         title: "Account Created 🎉",
-        description: "Welcome to CampusOS! Your account has been created successfully.",
+        description:
+          "Welcome to CampusOS! Your account has been created successfully.",
         variant: "success",
       });
 
       setTimeout(() => {
         navigate(`/login/${role}`);
       }, 1600);
-
     } catch (error: any) {
       let message = "Unable to create account.";
 
@@ -224,14 +197,7 @@ export default function SignupPage({ role = "member" }: { role?: Role }) {
                   }}
                   className="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold"
                 >
-                  {done ? (
-                    <Check
-                      className="h-4 w-4"
-                      strokeWidth={3}
-                    />
-                  ) : (
-                    s.id
-                  )}
+                  {done ? <Check className="h-4 w-4" strokeWidth={3} /> : s.id}
                 </motion.div>
 
                 <span
@@ -421,15 +387,10 @@ export default function SignupPage({ role = "member" }: { role?: Role }) {
             className="py-8 text-center"
           >
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-success/15">
-              <Check
-                className="h-8 w-8 text-success"
-                strokeWidth={3}
-              />
+              <Check className="h-8 w-8 text-success" strokeWidth={3} />
             </div>
 
-            <h2 className="mt-5 text-xl font-bold">
-              Account Created!
-            </h2>
+            <h2 className="mt-5 text-xl font-bold">Account Created!</h2>
 
             <p className="mt-2 text-sm text-ink-soft">
               Redirecting you to Login...

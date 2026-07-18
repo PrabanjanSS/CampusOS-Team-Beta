@@ -4,64 +4,38 @@ const router = express.Router();
 
 const protect = require("../middlewares/authMiddleware");
 
-const authorizeRoles =
-require("../middlewares/roleMiddleware");
+const authorizeRoles = require("../middlewares/roleMiddleware");
 
-
-const{
-
-    createLeaderboard,
-    getLeaderboard,
-    updateLeaderboard,
-    
-
-}=require("../controllers/leaderboardController");
-
-
+const {
+  createLeaderboard,
+  getLeaderboard,
+  updateLeaderboard,
+} = require("../controllers/leaderboardController");
 
 router.post(
+  "/",
 
-    "/",
+  protect,
 
-    protect,
+  authorizeRoles("Admin"),
 
-    authorizeRoles(
-
-        "Admin"
-
-    ),
-
-    createLeaderboard
-
+  createLeaderboard,
 );
-
 
 router.get(
+  "/",
 
-    "/",
-
-    getLeaderboard
-
+  getLeaderboard,
 );
-
 
 router.put(
+  "/:id",
 
-    "/:id",
+  protect,
 
-    protect,
+  authorizeRoles("Admin"),
 
-    authorizeRoles(
-
-        "Admin"
-
-    ),
-
-    updateLeaderboard
-
+  updateLeaderboard,
 );
-
-
-
 
 module.exports = router;

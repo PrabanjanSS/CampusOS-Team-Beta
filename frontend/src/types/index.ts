@@ -1,4 +1,4 @@
-export type Role = 'member' | 'lead' | 'faculty';
+export type Role = "member" | "lead" | "faculty";
 
 export interface User {
   id: string;
@@ -10,7 +10,15 @@ export interface User {
   club?: string;
   avatarUrl?: string;
   bio?: string;
-  coverTheme?: 'navy' | 'violet' | 'emerald' | 'sunset' | 'tech' | 'design' | 'campus' | 'abstract';
+  coverTheme?:
+    | "navy"
+    | "violet"
+    | "emerald"
+    | "sunset"
+    | "tech"
+    | "design"
+    | "campus"
+    | "abstract";
   coverImage?: string;
   skills?: string[];
   achievements?: Achievement[];
@@ -69,7 +77,7 @@ export interface ToastItem {
   id: string;
   title: string;
   description?: string;
-  variant: 'success' | 'error' | 'warning' | 'info';
+  variant: "success" | "error" | "warning" | "info";
 }
 
 export interface NavItem {
@@ -86,7 +94,7 @@ export interface StatCard {
   suffix?: string;
   delta?: number;
   icon: string;
-  accent: 'navy' | 'success' | 'warning' | 'sand';
+  accent: "navy" | "success" | "warning" | "sand";
 }
 
 export interface DashboardEvent {
@@ -103,7 +111,7 @@ export interface TimelineEntry {
   title: string;
   description: string;
   time: string;
-  type: 'event' | 'project' | 'announcement' | 'meeting';
+  type: "event" | "project" | "announcement" | "meeting";
 }
 
 export interface Project {
@@ -112,7 +120,7 @@ export interface Project {
   description: string;
   progress: number;
   members: number;
-  status: 'active' | 'review' | 'completed' | 'planning';
+  status: "active" | "review" | "completed" | "planning";
   dueDate: string;
   tag: string;
 }
@@ -131,7 +139,7 @@ export interface Announcement {
   body: string;
   author: string;
   date: string;
-  priority: 'high' | 'normal' | 'low';
+  priority: "high" | "normal" | "low";
 }
 
 export interface NotificationItem {
@@ -140,7 +148,7 @@ export interface NotificationItem {
   description: string;
   time: string;
   read: boolean;
-  variant: 'info' | 'success' | 'warning';
+  variant: "info" | "success" | "warning";
 }
 
 export interface CalendarDay {
@@ -159,16 +167,16 @@ export interface ClubMember {
   joinedDate: string;
   avatarUrl?: string;
   points: number;
-  status: 'active' | 'inactive';
+  status: "active" | "inactive";
 }
 
 export interface PendingApproval {
   id: string;
-  type: 'event' | 'budget' | 'project' | 'member';
+  type: "event" | "budget" | "project" | "member";
   title: string;
   submittedBy: string;
   submittedDate: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: "pending" | "approved" | "rejected";
 }
 
 // Faculty-specific types
@@ -178,7 +186,7 @@ export interface ClubOverview {
   lead: string;
   members: number;
   eventsThisMonth: number;
-  status: 'active' | 'inactive' | 'pending';
+  status: "active" | "inactive" | "pending";
   department: string;
   performance: number;
 }
@@ -187,8 +195,7 @@ export interface ReportItem {
   id: string;
   title: string;
   club: string;
-  type: 'monthly' | 'event' | 'budget' | 'activity';
+  type: "monthly" | "event" | "budget" | "activity";
   date: string;
-  status: 'submitted' | 'reviewed' | 'approved';
+  status: "submitted" | "reviewed" | "approved";
 }
-

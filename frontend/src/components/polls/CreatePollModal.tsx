@@ -11,11 +11,7 @@ interface Props {
   onCreate: (poll: Poll) => void;
 }
 
-export default function CreatePollModal({
-  open,
-  onClose,
-  onCreate,
-}: Props) {
+export default function CreatePollModal({ open, onClose, onCreate }: Props) {
   const { toast } = useToast();
 
   const [title, setTitle] = useState("");

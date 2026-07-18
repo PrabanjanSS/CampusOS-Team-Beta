@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import type { ReactNode } from "react";
+import { motion } from "framer-motion";
 
 export const fadeUp = {
   initial: { opacity: 0, y: 16 },
@@ -11,12 +11,20 @@ export const stagger = {
   animate: { transition: { staggerChildren: 0.08 } },
 };
 
-export function FadeIn({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) {
+export function FadeIn({
+  children,
+  delay = 0,
+  className,
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, type: 'spring', stiffness: 220, damping: 24 }}
+      transition={{ delay, type: "spring", stiffness: 220, damping: 24 }}
       className={className}
     >
       {children}
@@ -24,17 +32,38 @@ export function FadeIn({ children, delay = 0, className }: { children: ReactNode
   );
 }
 
-export function StaggerGroup({ children, className }: { children: ReactNode; className?: string }) {
+export function StaggerGroup({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
-    <motion.div initial="initial" animate="animate" variants={stagger} className={className}>
+    <motion.div
+      initial="initial"
+      animate="animate"
+      variants={stagger}
+      className={className}
+    >
       {children}
     </motion.div>
   );
 }
 
-export function StaggerItem({ children, className }: { children: ReactNode; className?: string }) {
+export function StaggerItem({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
-    <motion.div variants={fadeUp} transition={{ type: 'spring', stiffness: 220, damping: 24 }} className={className}>
+    <motion.div
+      variants={fadeUp}
+      transition={{ type: "spring", stiffness: 220, damping: 24 }}
+      className={className}
+    >
       {children}
     </motion.div>
   );

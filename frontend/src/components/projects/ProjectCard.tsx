@@ -1,12 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import {
-  Heart,
-  Eye,
-  Users,
-  ExternalLink,
-  Star,
-} from "lucide-react";
+import { Heart, Eye, Users, ExternalLink, Star } from "lucide-react";
 
 import type { Project } from "../../types/project";
 
@@ -44,13 +38,9 @@ export default function ProjectCard({ project }: Props) {
       {/* Body */}
       <div className="space-y-4 p-5">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">
-            {project.title}
-          </h2>
+          <h2 className="text-xl font-bold text-gray-900">{project.title}</h2>
 
-          <p className="text-sm font-medium text-indigo-600">
-            {project.club}
-          </p>
+          <p className="text-sm font-medium text-indigo-600">{project.club}</p>
         </div>
 
         <p className="line-clamp-3 text-sm text-gray-600">

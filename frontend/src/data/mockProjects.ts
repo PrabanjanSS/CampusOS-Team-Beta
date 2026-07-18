@@ -5,7 +5,8 @@ export const mockProjects: Project[] = [
     id: "1",
     title: "CampusOS",
     club: "Codechef",
-    description: "A complete Student Club Collaboration Platform for managing clubs, events, polls, planner and projects.",
+    description:
+      "A complete Student Club Collaboration Platform for managing clubs, events, polls, planner and projects.",
     techStack: ["React", "TypeScript", "Firebase", "Tailwind CSS"],
     members: 8,
     likes: 126,
@@ -20,7 +21,8 @@ export const mockProjects: Project[] = [
     id: "2",
     title: "LoanLens",
     club: "CSI",
-    description: "Loan comparison platform helping students understand loans transparently.",
+    description:
+      "Loan comparison platform helping students understand loans transparently.",
     techStack: ["React", "Node.js", "MongoDB"],
     members: 5,
     likes: 82,

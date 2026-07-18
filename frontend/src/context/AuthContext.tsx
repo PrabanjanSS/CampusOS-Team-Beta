@@ -1,10 +1,23 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import type { ReactNode } from 'react';
-import { signOut } from 'firebase/auth';
-import type { User as FirebaseUser } from 'firebase/auth';
-import { auth } from '../firebase';
-import type { AuthSession, LoginPayload, RegisterPayload, Role, User } from '../types';
-import { authService } from '../services/auth';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import type { ReactNode } from "react";
+import { signOut } from "firebase/auth";
+import type { User as FirebaseUser } from "firebase/auth";
+import { auth } from "../firebase";
+import type {
+  AuthSession,
+  LoginPayload,
+  RegisterPayload,
+  Role,
+  User,
+} from "../types";
+import { authService } from "../services/auth";
 
 interface AuthContextValue {
   user: User | null;
@@ -21,8 +34,8 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-const TOKEN_KEY = 'campusos_token';
-const USER_KEY = 'campusos_user';
+const TOKEN_KEY = "campusos_token";
+const USER_KEY = "campusos_user";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -58,7 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       persist(session);
       return session;
     },
-    [persist]
+    [persist],
   );
 
   const register = useCallback(
@@ -67,7 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       persist(session);
       return session;
     },
-    [persist]
+    [persist],
   );
 
   // Google Authentication
@@ -76,7 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const session = await authService.googleLogin(firebaseUser);
       persist(session);
     },
-    [persist]
+    [persist],
   );
 
   // Logout from Firebase
@@ -84,7 +97,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await signOut(auth);
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Logout failed:", error);
     }
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
@@ -114,7 +127,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       logout,
       updateUser,
     }),
-    [user, token, isLoading, login, register, googleLogin, logout, updateUser]
+    [user, token, isLoading, login, register, googleLogin, logout, updateUser],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -123,6 +136,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 // eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
+  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
   return ctx;
 }
