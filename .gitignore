@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Dependency directories
 node_modules/
 
@@ -33,7 +32,7 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
-=======
+
 logs
 *.log
 npm-debug.log*
@@ -57,4 +56,4 @@ dist-ssr
 *.sln
 *.sw?
 .env
->>>>>>> origin/feature/frontend-updates
+

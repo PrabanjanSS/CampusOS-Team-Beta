@@ -1,16 +1,24 @@
-// Backend Entry Point
-require('dotenv').config();
-const express = require('express');
-const app = express();
+require("dotenv").config();
+
+const app = require("./app");
+
+const connectDB = require("./config/db");
+
 
 const PORT = process.env.PORT || 5000;
 
-app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('CampusOS API is running...');
-});
+// Connect Database
+
+connectDB();
+
+
+// Start Server
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+
+    console.log(
+        `🚀 Server running on Port ${PORT}`
+    );
+
 });
