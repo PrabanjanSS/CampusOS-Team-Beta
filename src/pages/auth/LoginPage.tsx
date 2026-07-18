@@ -89,18 +89,6 @@ export default function LoginPage({ role }: { role: Role }) {
   const { toast } = useToast();
   const [remember, setRemember] = useState(true);
   const [loading, setLoading] = useState(false);
-
-  const getDashboardPath = (userRole?: string) => {
-    switch (userRole) {
-      case 'lead':
-        return '/app/lead';
-      case 'faculty':
-      case 'admin':
-        return '/app/faculty';
-      default:
-        return '/app/member';
-    }
-  };
   const demoLogin = (role: "member" | "lead" | "faculty") => {
     localStorage.setItem("campusos_token", "demo-token");
 
@@ -126,14 +114,12 @@ export default function LoginPage({ role }: { role: Role }) {
     setLoading(true);
 
     try {
-      const session = await login({
+      await login({
         email: values.email,
         password: values.password,
         remember,
-        role: role,
+        role: "member", // temporary until backend provides role
       });
-
-      const targetPath = getDashboardPath(session.user?.role ?? role);
 
       toast({
         title: "Welcome Back!",
@@ -141,12 +127,26 @@ export default function LoginPage({ role }: { role: Role }) {
         variant: "success",
       });
 
-      navigate(targetPath);
+      navigate("/app");
 
-    } catch (error: unknown) {
-      const message = error instanceof Error && error.message
-        ? error.message
-        : "Invalid email or password.";
+    } catch (error: any) {
+      let message = "Invalid email or password.";
+
+      switch (error.code) {
+        case "auth/user-not-found":
+        case "auth/invalid-credential":
+        case "auth/wrong-password":
+          message = "Invalid email or password.";
+          break;
+
+        case "auth/too-many-requests":
+          message = "Too many failed attempts. Please try again later.";
+          break;
+
+        case "auth/network-request-failed":
+          message = "Network error. Please check your connection.";
+          break;
+      }
 
       toast({
         title: "Login Failed",
@@ -332,7 +332,7 @@ export default function LoginPage({ role }: { role: Role }) {
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full" size="lg" loading={loading} disabled={loading} magnetic>
+              <Button type="submit" className="w-full" size="lg" loading={loading} magnetic>
                 {loading ? "Signing In..." : "Sign In"}
               </Button>
 
